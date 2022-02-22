@@ -1,0 +1,45 @@
+##Elenco delle funzioni JS principali (tutte le funzioni,anche quelle qua non presenti, sono visitabili direttamente su la versione montata dell'editor##
+
+##Login##
+\\OnClick bottone Accedi
+{{Query1.run(()=>(!(typeof
+ Query1.data.find((row) => { return row.username===Input1.text})==='undefined')?
+	(((Query1.data.find((row) => { return row.username===Input1.text}).passw)===Input2.text)?
+		JSObject1.myFun1(Input1.text)
+		:showAlert('Username o password errati','error'))
+	:showAlert('Username o password Errati','error')))
+	}}
+
+##Main Page##
+\\Tabella
+{{!(typeof appsmith.store.loginID==='undefined')?
+	TableQuery.data
+	:showAlert('Attenzione:Tentativo di accesso alla pagina senza LOGIN ,effettuare logout!','error')
+	}}
+\\OnClick bottone Conferma nel form Dati Modificabili
+{{storeValue('order',Table2.selectedRow.__originalIndex__);
+	UpdateDescription.run(() => TableQuery.run(), () => showAlert('Modifica non effettuata'));
+	Switch2.isSwitchedOn ? setContattato.run() : setNonContattato.run();
+	Switch1.isSwitchedOn ? setCompletata.run() : setStatus.run() 
+	}}
+\\Visibilità dei form
+{{!!Table2.selectedRow._id}}
+\\Label di bottone con sopra nome dell'utente
+{{(FindAllUsers.data.find((row) => { return row.id === Table2.selectedRow.user_id })).first_name }} \\nome
+{{ (FindAllUsers.data.find((row) => { return row.id === Table2.selectedRow.user_id })).last_name}}	\\cognome
+\\Galleria
+
+##Archivio##
+\\Tabella
+{{!(typeof appsmith.store.loginID==='undefined')?
+	FindQuery.data
+	:showAlert('Attenzione:Tentativo di accesso alla pagina senza LOGIN ,effettuare logout!','error')
+}}
+\\Text widget "Stato Precedente" testo predefinito
+{{ATable.selectedRow.ex_status}}
+##Pannello gestione Stati##
+\\Tabella (con controllo amministratore)
+{{!(typeof appsmith.store.loginID==='undefined')?
+	(((FindOperatorsQuery.data.find((row) => { return row.username === appsmith.store.loginID })).admin === true)?FindStatiQuery.data:showAlert('At'))
+	:showAlert('Attenzione:Tentativo di accesso alla pagina senza Autorizzazione ,effettuare logout!','error')
+	}}

@@ -1,0 +1,22 @@
+##Elenco delle funzioni JS principali (tutte le funzioni,anche quelle qua non presenti, sono visitabili direttamente su la versione montata dell'editor##
+
+##Login##
+\\QueryLogin
+{username: {  $eq: {{Input1.text}}  } }
+
+##Main Page##
+//tableQuery
+{ status: { $not: { $eq: "Archiviata" } } }
+//updateDescription
+[Query]
+{ 
+    "_id": ObjectId("{{Table2.selectedRow._id}}")
+  }
+[Update]
+{ $set : {
+note: "{{Form2.data.RichTextEditor1}}",
+title: "{{Form2.data.Input4}}",
+modder: "{{appsmith.store.loginID}}",
+time_mod: "{{moment().format("DD-MM-YYYY HH:mm")}}"
+}
+}
